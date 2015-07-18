@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Second2DHMS</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="class.js" type="text/javascript"></script>
+    <script src="Second2DHMS_core.js" type="text/javascript"></script>
+        <!--<script src="testTDD.js" type="text/javascript"></script>-->
+</head>
+<body>
+    <div id="TimeScalar">
+    </div>
+
+    <div id="TimeScalar2">
+    </div>
+
+    <div id="TimeScalar3">
+    </div>
+
+    <div id="TimeScalar4">
+    </div>
+
+    <div id="TimeScalar5">
+    </div>
+
+    <script>
+    $(function(){
+        //---- 最大值到 天
+        var range = {min:0, max:86400}
+        var timeObj = new TimeScalarClass("#TimeScalar", range);
+        timeObj.SetTimeControlValue(2);
+        console.log("timeObj.GetTimeControlValue="+timeObj.GetTimeControlValue())
+
+        //---- 最大值到 时
+        var range = {min:0, max:3600}
+        var timeObj = new TimeScalarClass("#TimeScalar2", range);
+        timeObj.SetTimeControlValue(2);
+
+        //---- 最大值到 分
+        var range = {min:0, max:60}
+        var timeObj = new TimeScalarClass("#TimeScalar3", range);
+        timeObj.SetTimeControlValue(2);
+
+        //---- 最大值到 秒
+        var range = {min:0, max:59}
+        var timeObj = new TimeScalarClass("#TimeScalar4", range);
+        timeObj.SetTimeControlValue(2);
+    });
+    </script>
+</body>
+</html>
