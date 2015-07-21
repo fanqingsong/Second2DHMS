@@ -33,11 +33,11 @@ var TimeClass = Class.create({
 *  Changes:
 *******************************************************************************/
 var TimeScalarClass = Class.create(TimeClass, {
-    initialize: function($super, selector, range, option) {
+    initialize: function($super, selector, range) {
         $super(selector);
-        this.range = range;
+
         /* option = {unit="Minute"} 支持单位定制，最小单位 */
-        this.option = option;
+        this.range = range;
 
         /* 控件初始化 */
         var timeObj = this.timeObj;
@@ -58,6 +58,9 @@ var TimeScalarClass = Class.create(TimeClass, {
 
         var Second2DHMS = this.Second2DHMS;
 
+        /* 支持最小单位可定制 */
+        HandleUnitEffect();
+
         /* 函数体中定义的函数，可以在定以前使用。 此属性可做类私有化方案。
         function test(){
           a();
@@ -68,6 +71,38 @@ var TimeScalarClass = Class.create(TimeClass, {
         InitTimeScalar();
 
         /* ----------------- 以下为初始化过程私有函数 ---------- */
+        /* 单位可配置，配置单位后需要对流程做适配 */
+        function HandleUnitEffect()
+        {
+            range.unit = range.unit || "Second";
+
+            var rangeMap = {
+                "Day":{amplifier:86400, lowCtl:["Hour", "Minute", "Second"]},
+                "Hour":{amplifier:3600, lowCtl:["Minute", "Second"]},
+                "Minute":{amplifier:60, lowCtl:["Second"]},
+                "Second":{amplifier:1, lowCtl:[]}
+            };
+
+            var map = rangeMap[range.unit];
+            var amplifier = map.amplifier;
+            var lowCtl = map.lowCtl;
+
+            /* 在模板上记录放大倍数，以备设置和显示使用 */
+            timeObj.data("amplifier", amplifier);
+
+            /* 范围上下限转换为秒，后走通用流程即时 Second 2 DHMS */
+            range.min = range.min * amplifier;
+            range.max = range.max * amplifier;
+
+            /* 设置单位后，需要隐藏掉更低级控件 */
+            for ( var i=0; i<lowCtl.length; i++ )
+            {
+                var id = lowCtl[i];
+                $("[id='"+id+"']", timeObj).hide();
+                $("label[for='"+id+"']", timeObj).hide();
+            }
+        }
+
         function FillSelectOption(controlObj, min, max)
         {
             controlObj.empty();
@@ -280,12 +315,17 @@ var TimeScalarClass = Class.create(TimeClass, {
     Second2DHMS: function($super, num) {
         return $super(num);
     },
-    SetTimeControlValue: function(second){
+    SetTimeControlValue: function(originVal){
         var Second2DHMS = this.Second2DHMS ;
         var dayObj = this.dayObj;
         var hourObj = this.hourObj;
         var minuteObj = this.minuteObj;
         var secondObj = this.secondObj;
+        var timeObj = this.timeObj;
+
+        /* 支持最小单位可定制 */
+        var amplifier = timeObj.data("amplifier");
+        var second = originVal * amplifier;
 
         var dhmsJson = Second2DHMS(second);
 
@@ -305,6 +345,7 @@ var TimeScalarClass = Class.create(TimeClass, {
         var hourObj = this.hourObj;
         var minuteObj = this.minuteObj;
         var secondObj = this.secondObj;
+        var timeObj = this.timeObj;
 
         var d = dayObj.val();  
         var h = hourObj.val();
@@ -316,6 +357,10 @@ var TimeScalarClass = Class.create(TimeClass, {
             + m * 60
             + s * 1;
 
-        return totolSec;
+        /* 支持最小单位可定制 */
+        var amplifier = timeObj.data("amplifier");
+        var transVal = Math.floor(totolSec / amplifier);
+
+        return transVal;
     }
 });

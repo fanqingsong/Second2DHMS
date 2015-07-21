@@ -40,7 +40,7 @@ $(function(){
         f. 再次切换天为 49709，查看时 可选值为 0-23
         49710天6时28分15秒
     */
-    var range = {min:0, max:4294967295}
+    var range = {min:0, max:4294967295, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(4294967295, true);
@@ -60,7 +60,7 @@ $(function(){
             分 - 28
             秒 - 14-15
     */
-    var range = {min:4294967294, max:4294967295}
+    var range = {min:4294967294, max:4294967295, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(4294967295, true);
@@ -79,7 +79,7 @@ $(function(){
             秒 - 15-59 选择分为 27
             秒 - 0-15 选择分为 28
      */
-    var range = {min:4294967235, max:4294967295}
+    var range = {min:4294967235, max:4294967295, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(4294967295, true);
@@ -101,7 +101,7 @@ $(function(){
             秒 - 0-15 选择分为 28， 时为6
             秒 - 0-59 选择分为 27， 时为6
      */
-    var range = {min:4294963695, max:4294967295}
+    var range = {min:4294963695, max:4294967295, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(4294967295, true);
@@ -121,7 +121,7 @@ $(function(){
             选择天为49709，时为7， 查看分秒范围都为 0-59
             选择天为49710，时为5， 查看分秒范围都为 0-59
      */
-    var range = {min:4294880895, max:4294967295}
+    var range = {min:4294880895, max:4294967295, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(4294967295, true);
@@ -133,7 +133,7 @@ $(function(){
         1天0时0分0秒
         0天0时0分0秒
      */
-    var range = {min:0, max:86400}
+    var range = {min:0, max:86400, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(86400, true);
@@ -146,7 +146,7 @@ $(function(){
         0天23时59分59秒
         0天0时0分0秒
      */
-    var range = {min:0, max:86399}
+    var range = {min:0, max:86399, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(86399, true);
@@ -159,7 +159,7 @@ $(function(){
         0天1时0分0秒
         0天0时0分0秒
      */
-    var range = {min:0, max:3600}
+    var range = {min:0, max:3600, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(3600, true);
@@ -172,7 +172,7 @@ $(function(){
         0天0时59分59秒
         0天0时0分0秒
      */
-    var range = {min:0, max:3599}
+    var range = {min:0, max:3599, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(3599, true);
@@ -184,7 +184,7 @@ $(function(){
         0天0时1分0秒
         0天0时0分0秒
     */
-    var range = {min:0, max:60}
+    var range = {min:0, max:60, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(60, true);
@@ -196,7 +196,7 @@ $(function(){
         0天0时0分59秒
         0天0时0分0秒
     */
-    var range = {min:0, max:59}
+    var range = {min:0, max:59, unit:"Second"}
     var timeObj = new TimeScalarClass("#TimeScalar", range);
 
     timeObj.TestSetGet(59, true);
