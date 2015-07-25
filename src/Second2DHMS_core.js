@@ -2,10 +2,96 @@
     console.log = console.log || {};
 
     /*******************************************************************************
+    *  Description: 标量时间类
+    *  Changes:
+    *******************************************************************************/
+    var TimeScalarClass = Class.create({
+        initialize: function(selector, range) {
+            var timeObj = this.timeObj = $(selector);
+
+            /* option = {unit="Minute"} 支持单位定制,最小单位 */
+            this.range = range;
+
+            /* 控件初始化 */
+            timeObj.empty();
+            var seleHTML = '<select id="Day"></select><label for="Day">天</label>';
+            seleHTML += '<select id="Hour"></select><label for="Hour">时</label>';
+            seleHTML += '<select id="Minute"></select><label for="Minute">分</label>';
+            seleHTML += '<select id="Second"></select><label for="Second">秒</label>';
+            timeObj.append(seleHTML);
+
+            var dayObj = this.dayObj = $("#Day", timeObj);
+            var hourObj = this.hourObj = $("#Hour", timeObj);
+            var minuteObj = this.minuteObj = $("#Minute", timeObj);
+            var secondObj = this.secondObj = $("#Second", timeObj);
+
+            InitDayChangeEvent(range, timeObj, hourObj);
+            InitHourChangeEvent(range, timeObj, dayObj, minuteObj);
+            InitMinuteChangeEvent(range, timeObj, dayObj, hourObj, secondObj);
+
+            /* 支持最小单位可定制 */
+            HandleUnitEffect(range,timeObj);
+
+            /* 初始化四位子控件 */
+            InitTimeScalar(range, timeObj, dayObj, hourObj, minuteObj);
+        },
+        SetTimeControlValue: function(originVal){
+            var dayObj = this.dayObj;
+            var hourObj = this.hourObj;
+            var minuteObj = this.minuteObj;
+            var secondObj = this.secondObj;
+            var timeObj = this.timeObj;
+
+            /* 支持最小单位可定制 */
+            var amplifier = timeObj.data("amplifier");
+            var second = originVal * amplifier;
+
+            var dhmsJson = Second2DHMS(second);
+
+            dayObj.val(dhmsJson.day);
+            dayObj.change();
+
+            hourObj.val(dhmsJson.hour);
+            hourObj.change();
+
+            minuteObj.val(dhmsJson.minute);
+            minuteObj.change();
+
+            secondObj.val(dhmsJson.second);
+        },
+        GetTimeControlValue: function(){
+            var dayObj = this.dayObj;
+            var hourObj = this.hourObj;
+            var minuteObj = this.minuteObj;
+            var secondObj = this.secondObj;
+            var timeObj = this.timeObj;
+
+            var d = dayObj.val();  
+            var h = hourObj.val();
+            var m = minuteObj.val();
+            var s = secondObj.val();
+
+            var totolSec = d * 86400
+                + h * 3600
+                + m * 60
+                + s * 1;
+
+            /* 支持最小单位可定制 */
+            var amplifier = timeObj.data("amplifier");
+            var transVal = Math.floor(totolSec / amplifier);
+
+            return transVal;
+        }
+    });
+
+    /* 将类开放出去，应用可以使用 */
+    window.TimeScalarClass = TimeScalarClass;
+
+
+    /*******************************************************************************
     *  Description: 以下为时间类的私有函数
     *  Changes:
     *******************************************************************************/
-    
     /* 将秒为单位累计量,转化为 天时分秒 */
     function Second2DHMS(num) {
         var s = num % 60;
@@ -267,91 +353,5 @@
             }
         }
     }
-
-    /*******************************************************************************
-    *  Description: 标量时间类
-    *  Changes:
-    *******************************************************************************/
-    var TimeScalarClass = Class.create({
-        initialize: function(selector, range) {
-            var timeObj = this.timeObj = $(selector);
-
-            /* option = {unit="Minute"} 支持单位定制,最小单位 */
-            this.range = range;
-
-            /* 控件初始化 */
-            timeObj.empty();
-            var seleHTML = '<select id="Day"></select><label for="Day">天</label>';
-            seleHTML += '<select id="Hour"></select><label for="Hour">时</label>';
-            seleHTML += '<select id="Minute"></select><label for="Minute">分</label>';
-            seleHTML += '<select id="Second"></select><label for="Second">秒</label>';
-            timeObj.append(seleHTML);
-
-            var dayObj = this.dayObj = $("#Day", timeObj);
-            var hourObj = this.hourObj = $("#Hour", timeObj);
-            var minuteObj = this.minuteObj = $("#Minute", timeObj);
-            var secondObj = this.secondObj = $("#Second", timeObj);
-
-            InitDayChangeEvent(range, timeObj, hourObj);
-            InitHourChangeEvent(range, timeObj, dayObj, minuteObj);
-            InitMinuteChangeEvent(range, timeObj, dayObj, hourObj, secondObj);
-
-            /* 支持最小单位可定制 */
-            HandleUnitEffect(range,timeObj);
-
-            /* 初始化四位子控件 */
-            InitTimeScalar(range, timeObj, dayObj, hourObj, minuteObj);
-        },
-        SetTimeControlValue: function(originVal){
-            var dayObj = this.dayObj;
-            var hourObj = this.hourObj;
-            var minuteObj = this.minuteObj;
-            var secondObj = this.secondObj;
-            var timeObj = this.timeObj;
-
-            /* 支持最小单位可定制 */
-            var amplifier = timeObj.data("amplifier");
-            var second = originVal * amplifier;
-
-            var dhmsJson = Second2DHMS(second);
-
-            dayObj.val(dhmsJson.day);
-            dayObj.change();
-
-            hourObj.val(dhmsJson.hour);
-            hourObj.change();
-
-            minuteObj.val(dhmsJson.minute);
-            minuteObj.change();
-
-            secondObj.val(dhmsJson.second);
-        },
-        GetTimeControlValue: function(){
-            var dayObj = this.dayObj;
-            var hourObj = this.hourObj;
-            var minuteObj = this.minuteObj;
-            var secondObj = this.secondObj;
-            var timeObj = this.timeObj;
-
-            var d = dayObj.val();  
-            var h = hourObj.val();
-            var m = minuteObj.val();
-            var s = secondObj.val();
-
-            var totolSec = d * 86400
-                + h * 3600
-                + m * 60
-                + s * 1;
-
-            /* 支持最小单位可定制 */
-            var amplifier = timeObj.data("amplifier");
-            var transVal = Math.floor(totolSec / amplifier);
-
-            return transVal;
-        }
-    });
-
-    /* 将类开放出去，应用可以使用 */
-    window.TimeScalarClass = TimeScalarClass;
 })(jQuery);
 
