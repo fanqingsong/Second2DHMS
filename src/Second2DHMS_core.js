@@ -1,3 +1,4 @@
+(function($){
 	console.log = console.log || {};
 
 	/*******************************************************************************
@@ -344,4 +345,6 @@
 	    }
 	});
 
+	window.TimeScalarClass = TimeScalarClass;
+})(jQuery);
 
