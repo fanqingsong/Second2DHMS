@@ -20,7 +20,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/Second2DHMS_core.js'],
-        dest: 'build/Second2DHMS.js'
+        dest: 'build/Second2DHMS_concat.js'
       }
     },
     uglify: {
@@ -38,16 +38,20 @@ module.exports = function(grunt) {
         eqeqeq: true,
         immed: true,
         latedef: true,
-        newcap: true,
+        laxbreak: true,
+        newcap: false, //函数名首字母大写表示类的构造函数
         noarg: true,
         sub: true,
         undef: true,
-        unused: true,
+        unused: false,
         boss: true,
         eqnull: true,
         browser: true,
         globals: {
-          jQuery: true
+          jQuery: true,
+          console: true,
+          $: true,
+          Class: true
         }
       },
       gruntfile: {

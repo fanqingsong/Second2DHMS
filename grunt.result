@@ -1,0 +1,13 @@
+[4mRunning "jshint:gruntfile" (jshint) task[24m
+[32m>> [39m1 file lint free.
+
+[4mRunning "jshint:lib_test" (jshint) task[24m
+[32m>> [39m1 file lint free.
+
+[4mRunning "concat:dist" (concat) task[24m
+File build/Second2DHMS_concat.js created.
+
+[4mRunning "uglify:dist" (uglify) task[24m
+[32m>> [39m1 file created.
+
+[32mDone, without errors.[39m
