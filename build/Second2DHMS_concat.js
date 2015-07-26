@@ -1,4 +1,4 @@
-/*! PROJECT_NAME - v0.1.0 - 2015-07-25
+/*! PROJECT_NAME - v0.1.0 - 2015-07-26
 * http://PROJECT_WEBSITE/
 * Copyright (c) 2015 YOUR_NAME; Licensed MIT */
 (function($){
